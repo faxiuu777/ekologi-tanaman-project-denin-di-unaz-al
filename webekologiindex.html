@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Pengamatan Praktek Ekologi Tanaman</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+body { font-family: Arial; margin: 20px; }
+h2 { text-align: center; }
+label { display:block; margin-top:10px; }
+input { width:100%; padding:6px; }
+table { width:100%; border-collapse:collapse; margin-top:20px; }
+table, th, td { border:1px solid black; }
+th, td { padding:8px; text-align:center; }
+button { margin-top:20px; padding:12px; width:100%; font-size:16px; }
+</style>
+</head>
+
+<body>
+
+<h2>PENGAMATAN PRAKTEK EKOLOGI TANAMAN</h2>
+
+<label>Hari / Tanggal</label>
+<input id="tanggal">
+
+<label>HST</label>
+<input id="hst">
+
+<label>Ulangan</label>
+<input id="ulangan">
+
+<label>Minggu ke-</label>
+<input id="minggu">
+
+<table>
+<tr>
+<th>Sampel</th>
+<th>Tinggi Tanaman (cm)</th>
+<th>Jumlah Daun</th>
+</tr>
+<tr><td>1</td><td><input></td><td><input></td></tr>
+<tr><td>2</td><td><input></td><td><input></td></tr>
+<tr><td>3</td><td><input></td><td><input></td></tr>
+<tr><td>4</td><td><input></td><td><input></td></tr>
+</table>
+
+<label>Rata-rata Tinggi Tanaman (cm)</label>
+<input id="rt">
+
+<label>Rata-rata Jumlah Daun</label>
+<input id="rd">
+
+<button onclick="buatPDF()">KIRIM KE WHATSAPP</button>
+
+<script>
+function buatPDF() {
+  const { jsPDF } = window.jspdf;
+  let pdf = new jsPDF();
+
+  pdf.text("PENGAMATAN PRAKTEK EKOLOGI TANAMAN", 20, 20);
+  pdf.text("Hari/Tgl: " + tanggal.value, 20, 30);
+  pdf.text("HST: " + hst.value, 20, 38);
+  pdf.text("Ulangan: " + ulangan.value, 20, 46);
+  pdf.text("Minggu ke: " + minggu.value, 20, 54);
+
+  let y = 70;
+  pdf.text("Sampel | Tinggi (cm) | Jumlah Daun", 20, y);
+  y += 10;
+
+  document.querySelectorAll("table tr").forEach((row, i) => {
+    if(i>0){
+      let cells = row.querySelectorAll("input");
+      pdf.text(`${i}        ${cells[0].value}              ${cells[1].value}`, 20, y);
+      y += 8;
+    }
+  });
+
+  y += 10;
+  pdf.text("Rata-rata Tinggi: " + rt.value + " cm", 20, y);
+  y += 8;
+  pdf.text("Rata-rata Jumlah Daun: " + rd.value, 20, y);
+
+  pdf.save("pengamatan.pdf");
+
+  window.open("https://wa.me/6283876589123", "_blank");
+}
+</script>
+
+</body>
+</html>
